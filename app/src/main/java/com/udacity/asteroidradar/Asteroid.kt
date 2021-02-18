@@ -2,11 +2,12 @@ package com.udacity.asteroidradar
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
+import com.udacity.asteroidradar.database.DatabaseAsteroid
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Asteroid(
-        @Json(name = "id_asteroid")val id: Long,
+        val id: Long,
         val codename: String,
         val closeApproachDate: String,
         val absoluteMagnitude: Double,
@@ -14,3 +15,18 @@ data class Asteroid(
         val relativeVelocity: Double,
         val distanceFromEarth: Double,
         val isPotentiallyHazardous: Boolean) : Parcelable
+
+fun List<Asteroid>.asDatabaseModel(): Array<DatabaseAsteroid>{
+    return this.map {
+        DatabaseAsteroid(
+           id = it.id,
+                codename = it.codename,
+                closeApproachDate = it.closeApproachDate,
+                absoluteMagnitude = it.absoluteMagnitude,
+                estimatedDiameter = it.estimatedDiameter,
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardous = it.isPotentiallyHazardous
+        )
+    }.toTypedArray()
+}

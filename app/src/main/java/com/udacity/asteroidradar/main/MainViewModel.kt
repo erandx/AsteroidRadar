@@ -6,6 +6,8 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.getLastSevenDays
+import com.udacity.asteroidradar.api.getToday
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,7 +52,7 @@ class MainViewModel : ViewModel() {
     private fun getAsteroids() {
         viewModelScope.launch {
             try {
-                val listResult = AsteroidApi.retrofitService.getAsteroids("2021-01-08", "2021-01-01", Constants.API_KEY)
+                val listResult = AsteroidApi.retrofitService.getAsteroids(getToday(), getLastSevenDays(), Constants.API_KEY)
                 _asteroids.value = "Success + ${listResult} Asteroids"
             } catch (t: Throwable) {
                 _asteroids.value = "Failure" + t.message

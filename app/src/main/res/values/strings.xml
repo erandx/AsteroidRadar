@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Asteroid Radar</string>
 
+    <string name="asteroid_name">(2019 XK351)</string>
+    <string name="asteroid_approach_date">(2019 XK351)</string>
     <string name="next_week_asteroids">View week asteroids</string>
     <string name="today_asteroids">View today asteroids</string>
     <string name="saved_asteroids">View saved asteroids</string>

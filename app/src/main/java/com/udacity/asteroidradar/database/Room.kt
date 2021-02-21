@@ -9,9 +9,9 @@ import com.udacity.asteroidradar.Asteroid
 @Dao
 interface AsteroidDAO{
 //
-//    //Loading all Asteroids in our Main Fragment
-//    @Query("select * from databaseAsteroid")
-//    fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
+    //Loading all Asteroids in our Main Fragment
+    @Query("select * from databaseAsteroid")
+    fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
 //
 //    //Upsert: Update and insert. Replace items in case of duplicates
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)

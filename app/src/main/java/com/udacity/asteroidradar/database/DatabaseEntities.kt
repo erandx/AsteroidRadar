@@ -20,7 +20,7 @@ data class DatabaseAsteroid constructor(
 
 )
 
-//Extension fun to convert from Database objects to Domain Objects.
+//Extension fun to convert from Database objects to Domain Objects. (DatabaseAsteroid to Asteroid)
 fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid>{
         return map {
                 Asteroid(

@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+
+        <variable
+            name="clickListener"
+            type="com.udacity.asteroidradar.main.AsteroidAdapter.AsteroidClickListener" />
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -10,30 +21,35 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:onClick="@{()->clickListener.onClick(asteroid)}">
 
             <TextView
                 android:id="@+id/code_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:text="@string/asteroid_name"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:text="@{asteroid.codename}"
                 android:textColor="@color/default_text_color"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintBottom_toTopOf="@+id/date_approach"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/asteroid_name" />
 
             <TextView
                 android:id="@+id/date_approach"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_normal"
-                android:text="@string/asteroid_approach_date"
+                android:text="@{asteroid.closeApproachDate}"
                 android:textColor="@color/default_text_color"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/code_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/code_name" />
+                app:layout_constraintStart_toStartOf="@+id/code_name"
+                app:layout_constraintTop_toBottomOf="@+id/code_name"
+                tools:text="@string/asteroid_approach_date" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -42,13 +58,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:statusIcon="@{asteroid.potentiallyHazardous}"
                 tools:src="@drawable/ic_status_potentially_hazardous" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </com.google.android.material.card.MaterialCardView>
-
 
 </layout>

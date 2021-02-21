@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -29,7 +30,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{viewModel.picture.url}"
-                app:srcCompat="@drawable/placeholder_picture_of_day"/>
+                app:srcCompat="@drawable/placeholder_picture_of_day"
+                android:contentDescription="@string/image_of_the_day" />
 
             <TextView
                 android:id="@+id/textView"
@@ -44,22 +46,24 @@
                 android:text="@string/image_of_the_day" />
         </FrameLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:text="@{viewModel.asteroids}"
-            android:textColor="@color/cardview_light_background"
-            app:layout_constraintBottom_toBottomOf="@+id/asteroid_recycler"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:text="@{viewModel.asteroidList}"-->
+<!--            android:textColor="@color/cardview_light_background"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/asteroid_recycler"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/asteroid_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:listData="@{viewModel.asteroidList}"
+            tools:listitem="@layout/asteroid_item"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +78,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="gone"
+            app:goneIfNotNull="@{viewModel.asteroidList}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

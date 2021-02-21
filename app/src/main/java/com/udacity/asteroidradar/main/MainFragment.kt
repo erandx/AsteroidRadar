@@ -3,7 +3,9 @@ package com.udacity.asteroidradar.main
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -15,10 +17,25 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+
+        //Binds the asteroid RecyclerView adapter with click handler. Tells the MainViewModel when
+        // the Asteroid item is clicked.
+        binding.asteroidRecycler.adapter = AsteroidAdapter(AsteroidAdapter.AsteroidClickListener{
+        viewModel.displayAsteroidDetails(it)
+        })
+
+        //Observe the NavigateToAsteroidDetails LiveData and navigate when it isn't null
+        viewModel.navigateToAsteroidDetails.observe(viewLifecycleOwner, Observer {
+        if (it != null){
+            this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+            viewModel.displayAsteroidDetailsComplete()
+        }
+        })
 
         setHasOptionsMenu(true)
 

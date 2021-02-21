@@ -69,5 +69,4 @@ fun getToday(): String{
     val today = calendar.time
     val dateformatted =  SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
     return dateformatted.format(today)
-    
 }

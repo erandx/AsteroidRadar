@@ -27,9 +27,9 @@ data class AsteroidNetwork(
 )
 
 // Convert Network Result to Database Objects
-fun NetworkAsteroidContainer.asDomainModel(): List<Asteroid>{
+fun NetworkAsteroidContainer.asDomainModel(): List<DatabaseAsteroid>{
     return asteroids.map{
-        Asteroid(
+        DatabaseAsteroid(
                 id = it.id,
                 codename = it.codename,
                 closeApproachDate = it.closeApproachDate,

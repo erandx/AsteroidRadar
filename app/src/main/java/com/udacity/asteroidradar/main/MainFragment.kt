@@ -7,12 +7,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.api.AsteroidsApiFilter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
+    /*
+    * A way to delay viewModel creation until a lifecycle method is to use lazy. This requires
+    * ViewModel to not be referenced before onViewCreated(), which we do in this fragment
+     */
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        val activity = requireNotNull(this.activity)
+        ViewModelProvider(this, MainViewModelFactorty(activity.application)).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -25,16 +31,16 @@ class MainFragment : Fragment() {
 
         //Binds the asteroid RecyclerView adapter with click handler. Tells the MainViewModel when
         // the Asteroid item is clicked.
-        binding.asteroidRecycler.adapter = AsteroidAdapter(AsteroidAdapter.AsteroidClickListener{
-        viewModel.displayAsteroidDetails(it)
+        binding.asteroidRecycler.adapter = AsteroidAdapter(AsteroidAdapter.AsteroidClickListener {
+            viewModel.displayAsteroidDetails(it)
         })
 
         //Observe the NavigateToAsteroidDetails LiveData and navigate when it isn't null
         viewModel.navigateToAsteroidDetails.observe(viewLifecycleOwner, Observer {
-        if (it != null){
-            this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
-            viewModel.displayAsteroidDetailsComplete()
-        }
+            if (it != null) {
+                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                viewModel.displayAsteroidDetailsComplete()
+            }
         })
 
         setHasOptionsMenu(true)
@@ -48,6 +54,13 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.updateFilter(
+                when (item.itemId) {
+                    R.id.show_week_menu -> AsteroidsApiFilter.SHOW_ALL
+                    R.id.show_today_menu -> AsteroidsApiFilter.SHOW_TODAY
+                    else -> AsteroidsApiFilter.SHOW_SAVED
+                }
+        )
         return true
     }
 }

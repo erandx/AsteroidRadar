@@ -95,7 +95,6 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         app:srcCompat="@drawable/ic_help_circle" />
-
                 </LinearLayout>
 
                 <TextView

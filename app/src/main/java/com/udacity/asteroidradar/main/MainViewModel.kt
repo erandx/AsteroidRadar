@@ -6,9 +6,7 @@ import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.PictureOfDay
-import com.udacity.asteroidradar.api.AsteroidApi
-import com.udacity.asteroidradar.api.getLastSevenDays
-import com.udacity.asteroidradar.api.getToday
+import com.udacity.asteroidradar.api.*
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
@@ -24,10 +22,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val asteroidRepository = AsteroidRepository(database)
 
     private val _status = MutableLiveData<AsteroidStatus>()
-
     val status: LiveData<AsteroidStatus>
         get() = _status
-
 
     private val _picture = MutableLiveData<PictureOfDay>()
     val picture: LiveData<PictureOfDay>
@@ -39,36 +35,29 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
+            asteroidRepository.getAsteroidSelection(AsteroidsApiFilter.SHOW_ALL)
             asteroidRepository.refreshAsteroids()
-            getPictureOfTheDay()
+            asteroidRepository.refreshPictureOfTheDay()
         }
     }
 
-    val asteroidList = asteroidRepository.asteroid
+    var asteroidList = asteroidRepository.asteroid
+    val pictureOfTheDay = asteroidRepository.pictureOfDay
 
-    private fun getPictureOfTheDay() {
-        _status.value = AsteroidStatus.LOADING
-        viewModelScope.launch {
-            try {
-                val pictureResult = AsteroidApi.retrofitService.getPictureOfTheDay()
-                _status.value = AsteroidStatus.DONE
-                _picture.value = pictureResult
-
-            } catch (t: Throwable) {
-                _status.value = AsteroidStatus.ERROR
-            }
-        }
-    }
 
     //Initiate navigation to the Details Fragment on Item click
-    fun displayAsteroidDetails(asteroid: Asteroid){
-    _navigateToAsteroidDetails.value = asteroid
+    fun displayAsteroidDetails(asteroid: Asteroid) {
+        _navigateToAsteroidDetails.value = asteroid
     }
 
     //We clear the LiveData to be triggered again when we return from Details Fragment
-    fun displayAsteroidDetailsComplete(){
+    fun displayAsteroidDetailsComplete() {
         _navigateToAsteroidDetails.value = null
     }
 
+    fun updateFilter(filter: AsteroidsApiFilter) {
+        //Observe the new Filtered Data
+        asteroidList = asteroidRepository.getAsteroidSelection(filter)
+    }
 
 }

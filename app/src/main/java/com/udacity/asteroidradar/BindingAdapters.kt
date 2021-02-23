@@ -7,7 +7,9 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.main.AsteroidAdapter
+import com.udacity.asteroidradar.main.AsteroidStatus
 import java.lang.reflect.Array.get
 
 @BindingAdapter("statusIcon")
@@ -27,9 +29,10 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
         imageView.setImageResource(R.drawable.asteroid_safe)
     }
 }
+
 @BindingAdapter("asteroidContentDescription")
-fun bindAsteroidContentDescription(imageView: ImageView, isHazardous: Boolean){
-    if (isHazardous){
+fun bindAsteroidContentDescription(imageView: ImageView, isHazardous: Boolean) {
+    if (isHazardous) {
         imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
     } else
         imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_image)
@@ -54,22 +57,35 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 }
 
 @BindingAdapter("imageUrl")
-fun bindImageOfTheDay(imageView: ImageView, imgUrl: String?){
+fun bindImageOfTheDay(imageView: ImageView, imgUrl: PictureOfDay?) {
     imgUrl?.let {
-        val imgUri = it.toUri().buildUpon().scheme("https").build()
+//        val imgUri = it.toUri().buildUpon().scheme("https").build()
         Picasso.with(imageView.context)
-                .load(imgUri)
+                .load(imgUrl.url)
+                .placeholder(R.drawable.placeholder_picture_of_day)
                 .into(imageView)
     }
 }
 
 @BindingAdapter("listData")
-fun recyclerBinding(recyclerView: RecyclerView, data: List<Asteroid>?){
+fun recyclerBinding(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidAdapter
     adapter.submitList(data)
 }
 
-@BindingAdapter ("goneIfNotNull")
-    fun goneIfNotNull(view: View, it: Any?){
-        view.visibility = if (it != null) View.GONE else View.VISIBLE
+@BindingAdapter("asteroidApiStatus")
+fun goneIfNotNull(view: ImageView, status: AsteroidStatus?) {
+    when (status) {
+        AsteroidStatus.LOADING -> {
+            view.visibility = View.VISIBLE
+            view.setImageResource(R.drawable.loading_animation)
+        }
+        AsteroidStatus.ERROR -> {
+            view.visibility = View.GONE
+            view.setImageResource(R.drawable.ic_connection_error)
+        }
+        AsteroidStatus.DONE -> {
+            view.visibility = View.GONE
+        }
+    }
 }

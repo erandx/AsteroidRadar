@@ -12,6 +12,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+enum class AsteroidsApiFilter(val string: String){SHOW_ALL(getLastSevenDays()), SHOW_TODAY(getToday()),SHOW_SAVED(getLastSevenDays())}
 //Use of Moshi Builder, creating a Moshi Object
 private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())

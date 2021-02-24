@@ -72,5 +72,4 @@ fun NetworkPictureOfTheDay.asDatabaseModel(): DatabasePictureOfDay{
             title = this.title,
             url = this.url
     )
-
 }

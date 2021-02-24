@@ -20,7 +20,6 @@ interface AsteroidDAO{
     //Upsert: Update and insert. Replace items in case of duplicates
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg asteroid: DatabaseAsteroid)
-
 }
 
 @Database(entities = [DatabaseAsteroid::class, DatabasePictureOfDay::class], version = 1, exportSchema = false)

@@ -25,23 +25,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val status: LiveData<AsteroidStatus>
         get() = _status
 
-    private val _picture = MutableLiveData<PictureOfDay>()
-    val picture: LiveData<PictureOfDay>
-        get() = _picture
+    private val _asteroidList = MutableLiveData<List<Asteroid>>()
+    val asteroidList: LiveData<List<Asteroid>>
+        get() = _asteroidList
 
     private val _navigateToAsteroidDetails = MutableLiveData<Asteroid>()
     val navigateToAsteroidDetails: LiveData<Asteroid>
         get() = _navigateToAsteroidDetails
 
+    //Updating a new list to the recyclerView
+    private val asteroidListObserver = Observer<List<Asteroid>> { asteroids ->
+        _asteroidList.value = asteroids
+
+    }
+    private var asteroidsLiveData: LiveData<List<Asteroid>>
+
     init {
+        asteroidsLiveData = asteroidRepository.getAsteroidSelection(AsteroidsApiFilter.SHOW_ALL)
+        asteroidsLiveData.observeForever(asteroidListObserver)
         viewModelScope.launch {
-            asteroidRepository.getAsteroidSelection(AsteroidsApiFilter.SHOW_ALL)
+
             asteroidRepository.refreshAsteroids()
             asteroidRepository.refreshPictureOfTheDay()
         }
     }
 
-    var asteroidList = asteroidRepository.asteroid
     val pictureOfTheDay = asteroidRepository.pictureOfDay
 
 
@@ -55,9 +63,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _navigateToAsteroidDetails.value = null
     }
 
-    fun updateFilter(filter: AsteroidsApiFilter) {
-        //Observe the new Filtered Data
-        asteroidList = asteroidRepository.getAsteroidSelection(filter)
+    //Cleaning the Observer
+    override fun onCleared() {
+        asteroidsLiveData.removeObserver(asteroidListObserver)
     }
 
+    fun updateFilter(filter: AsteroidsApiFilter) {
+        //Observe the new Filtered LiveData
+        asteroidsLiveData = asteroidRepository.getAsteroidSelection(filter)
+        asteroidsLiveData.observeForever(asteroidListObserver)
+    }
 }

@@ -17,6 +17,8 @@ interface AsteroidDAO{
     @Query("select * from asteroid_table WHERE close_approach_date = :date")
     fun getTodayAsteroids(date: String = getToday()): LiveData<List<DatabaseAsteroid>>
 
+    ///add a delete query so that when asteroids are refreshed, old ones are delete
+
     //Upsert: Update and insert. Replace items in case of duplicates
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg asteroid: DatabaseAsteroid)

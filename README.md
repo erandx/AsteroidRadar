@@ -1,9 +1,16 @@
-# Purpose of this Folder
+# Asteroid Radar: Project from Udacity - Android Kotlin Nano Degree by Google
 
-This folder should contain the scaffolded project files to get a student started on their project. This repo will be added to the Classroom for students to use, so please do not have any solutions in this folder.
 
-## Note: Android Kotlin Gradle Update
-Use the updated Gradle version in the `~/gradle/wrapper/gradle-wrapper.properties` file:
+## Note: NASA API used to see Asteroids approaching Earth in the next seven days.
+The App uses The main screen that implements a RecyclerView to bind the Asterod Items,
+and a Picture of the Day from Nasa.
+The Details Screen will show details and data of each asteroid approaching Earth.
 ```
-distributionUrl = https\://services.gradle.org/distributions/gradle-6.1.1-all.zip
+App uses the following components:
+MVVM (Model View View Model)
+Room
+LiveData
+DataBinding
+Navigation
 ```
+NASA API is free to get from  https://api.nasa.gov/ so please make sure to use one for your App.

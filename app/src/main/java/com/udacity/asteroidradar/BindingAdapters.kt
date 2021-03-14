@@ -63,6 +63,7 @@ fun bindImageOfTheDay(imageView: ImageView, imgUrl: PictureOfDay?) {
         Picasso.with(imageView.context)
                 .load(imgUrl.url)
                 .placeholder(R.drawable.placeholder_picture_of_day)
+            .error(R.drawable.ic_connection_error)
                 .into(imageView)
     }
 }
